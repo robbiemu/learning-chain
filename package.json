@@ -1,0 +1,38 @@
+{
+  "name": "learning-chain",
+  "version": "0.0.1",
+  "description": "cooperative learning experience",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest --colors"
+  },
+  "author": "Robert Collins <roberto.tomas.cuentas@gmail.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/crypto-js": "^4.0.1",
+    "@types/jest": "^26.0.20",
+    "@types/uuid": "^8.3.0",
+    "jest": "^26.6.3",
+    "ts-jest": "^26.5.2",
+    "typescript": "^4.2.2"
+  },
+  "dependencies": {
+    "crypto-js": "^4.0.0",
+    "uuid": "^8.3.2"
+  },
+  "jest": {
+    "preset": "ts-jest",
+    "testEnvironment": "node",
+    "roots": [
+      "<rootDir>/src"
+    ],
+    "moduleDirectories": [
+      "node_modules",
+      "src"
+    ],
+    "moduleNameMapper": {
+      "@blockchain/(.*)": "<rootDir>/src/blockchain/$1",
+      "@lib/(.*)": "<rootDir>/src/lib/$1"
+    }
+  }
+}
