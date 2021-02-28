@@ -6,6 +6,9 @@
       "@blockchain/*": [ "blockchain/*" ],
       "@lib/*": [ "lib/*" ],
     },
+    "plugins": [
+      { "transform": "ts-transformer-keys/transformer" }
+    ],
     "module": "CommonJS",
     "moduleResolution": "node",
     "target": "ES2020",

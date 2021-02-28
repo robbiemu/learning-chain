@@ -13,7 +13,7 @@ describe('hash', () => {
     expect(hash).toBeTruthy()
   })
 
-   it('should accept a hash', () => {
+  it('should accept a hash', () => {
     const message = 'dummy-data'
     const expected = Hash.encode(message)
     const hash = new Hash()

@@ -10,14 +10,19 @@
   "license": "MIT",
   "devDependencies": {
     "@types/crypto-js": "^4.0.1",
+    "@types/faker": "^5.1.7",
     "@types/jest": "^26.0.20",
     "@types/uuid": "^8.3.0",
+    "faker": "^5.4.0",
     "jest": "^26.6.3",
     "ts-jest": "^26.5.2",
+    "ts-transformer-keys": "^0.4.3",
+    "ttypescript": "^1.5.12",
     "typescript": "^4.2.2"
   },
   "dependencies": {
     "crypto-js": "^4.0.0",
+    "date-fns": "^2.17.0",
     "uuid": "^8.3.2"
   },
   "jest": {
@@ -33,6 +38,15 @@
     "moduleNameMapper": {
       "@blockchain/(.*)": "<rootDir>/src/blockchain/$1",
       "@lib/(.*)": "<rootDir>/src/lib/$1"
+    },
+    "globals": {
+      "ts-jest": {
+        "astTransformers": {
+          "before": [
+            "./ts-jest-keys-transformer.js"
+          ]
+        }
+      }
     }
   }
 }
