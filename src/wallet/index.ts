@@ -1,4 +1,4 @@
-import jsonfile from 'jsonfile'
+import fs from 'fs'
 
 import type { Account, AccountChange } from '@blockchain/entity';
 import { Topics } from '@hyperledger/constants';
@@ -17,8 +17,8 @@ export class Wallet {
   }
 
   private begin() {
-    jsonfile.readFile(CONFIGURATION_FILE)
-      .then(obj => this.onReadConfiguration(obj))
+    fs.promises.readFile(CONFIGURATION_FILE)
+      .then(obj => this.onReadConfiguration(JSON.parse(obj.toString())))
       .catch(error => this.onReadConfiguration(error))
   }
 

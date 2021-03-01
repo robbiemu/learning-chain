@@ -1,8 +1,6 @@
 import os from 'os'
 import path from 'path'
-import type { Worker } from 'worker_threads'
-import TSWorker from 'ts-worker'
-import { v4 as uuidV4 } from 'uuid'
+import { Worker } from 'worker_threads'
 import { Observable, Subject } from 'rxjs'
 
 import { Hash } from './hash';
@@ -101,16 +99,6 @@ export class MultiService {
 }
 MultiService.initialize()
 
-import { default as tsconfig } from '../../tsconfig.json'
-(tsconfig as any).files = true
-delete (tsconfig as any).rootDir
-tsconfig.compilerOptions.paths = Object.entries(tsconfig.compilerOptions.paths).reduce((p, c) => {
-  let key = c[0]
-  let value = c[1] as Array<string>
-  p[key] = path.join(__dirname, '..', value[0]! as string)
-  return p
-}, {} as any)
-
 /**
  * spawns threads to resolve hash at difficulty, publishing result in 
  * MultiService
@@ -125,15 +113,18 @@ tsconfig.compilerOptions.paths = Object.entries(tsconfig.compilerOptions.paths).
  *   .subscribe(resolution => onSuccess(resolution[task]))
  */
 export function getBlockAtDifficultyMultiThreaded(block: Partial<Block>, difficulty: number): UUID {
-  const uuid = uuidV4() // our task identifier
+  const uuid = Hash.uuid() // our task identifier
   const workers: Array<Worker> = []
   const threads = os.cpus()
+  const registerOptions = getRegisterOptions()
+
   threads.forEach((_, i) => {
     const args = { block, difficulty, i, threads }
-    const worker: Worker = TSWorker(path.join(__dirname, 'get-block-at-difficulty.worker.ts'), {
+    const worker: Worker = new Worker('./worker.js', {
       workerData: {
+        path: 'src/blockchain/get-block-at-difficulty.worker.ts',
         args,
-        registerOptions: tsconfig
+        registerOptions
       }
     })
 
@@ -144,4 +135,20 @@ export function getBlockAtDifficultyMultiThreaded(block: Partial<Block>, difficu
     })
   })
   return uuid
+}
+
+function getRegisterOptions() {
+  const registerOptions = require('../../tsconfig.json')
+  registerOptions.files = true
+  registerOptions.compilerOptions.paths = Object.entries(registerOptions.compilerOptions.paths).reduce((p, c) => {
+    const key = c[0]
+    const value = c[1] as Array<string>
+    p[key] = [path.join(__dirname, '..', value[0]!)]
+    return p
+  }, {} as any)
+  /*registerOptions.include = registerOptions.include.map((dir: string) => path.join(__dirname, '..', dir))*/
+
+  console.log(JSON.stringify(registerOptions))
+
+  return registerOptions
 }

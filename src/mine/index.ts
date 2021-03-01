@@ -1,8 +1,8 @@
+import fs from 'fs'
 import type { ConnectionInfo, Socket, Topic, Peer } from 'hyperswarm'
 import { Subject } from 'rxjs'
 import { map } from 'rxjs/operators'
 import { rxToStream, Streamable } from 'rxjs-stream'
-import jsonfile from 'jsonfile'
 
 import { assert } from '@lib/assert';
 import { Topics } from '@hyperledger/constants'
@@ -56,8 +56,8 @@ export class Mine extends MineBodyMessageHandler {
   }
 
   private begin() {
-    jsonfile.readFile(CONFIGURATION_FILE)
-      .then(obj => this.onReadConfiguration(obj))
+    fs.promises.readFile(CONFIGURATION_FILE)
+      .then(obj => this.onReadConfiguration(JSON.parse(obj.toString())))
       .catch(error => this.onReadConfiguration(error))
   }
 
@@ -69,12 +69,12 @@ export class Mine extends MineBodyMessageHandler {
       this.parseConfiguration(obj)
     }
 
-    jsonfile.readFile(this.banFile)
-      .then(obj => this.onReadBlacklist(obj))
+    fs.promises.readFile(this.banFile)
+      .then(obj => this.onReadBlacklist(JSON.parse(obj.toString())))
       .catch(error => this.onReadBlacklistError(error))
 
-    jsonfile.readFile(this.ledgerFile)
-      .then(obj => this.onReadLedger(obj))
+    fs.promises.readFile(this.ledgerFile)
+      .then(obj => this.onReadLedger(JSON.parse(obj.toString())))
       .catch(error => this.onReadLedgerError(error))
       .finally(() => this.onReady())
   }
@@ -124,7 +124,7 @@ export class Mine extends MineBodyMessageHandler {
 
   blacklist(peer: Peer) {
     this._blacklist.add(peer)
-    jsonfile.writeFile(this.banFile, JSON.stringify(Array.from(this._blacklist)))
+    fs.promises.writeFile(this.banFile, JSON.stringify(Array.from(this._blacklist)))
       .then(() => this.onUpdatedBlacklist(peer))
       .catch(err => this.onUpdateBlacklistError(err))
   }

@@ -1,7 +1,6 @@
 import { keys } from 'ts-transformer-keys';
 
 import { Topics } from '@hyperledger/constants'
-import type { UUID } from '@blockchain/entity'
 import { MinePayloadTypes } from '../constants';
 import type { MinePayload } from './payload.interface';
 import { SemVer } from 'semver';
