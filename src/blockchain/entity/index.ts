@@ -11,7 +11,6 @@ export interface AccountChange {
 }
 
 export type Account = number | string
-export type UUID = number
 
 export enum AccountChanges {
   From = 'from',

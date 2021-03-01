@@ -1,0 +1,25 @@
+{
+  "preset": "ts-jest",
+  "testEnvironment": "node",
+  "roots": [
+    "<rootDir>/src"
+  ],
+  "moduleDirectories": [
+    "node_modules",
+    "src"
+  ],
+  "moduleNameMapper": {
+    "@blockchain/(.*)": "<rootDir>/src/blockchain/$1",
+    "@hyperledger/(.*)": "<rootDir>/src/hyperledger/$1",
+    "@lib/(.*)": "<rootDir>/src/lib/$1"
+  },
+  "globals": {
+    "ts-jest": {
+      "astTransformers": {
+        "before": [
+          "./ts-jest-keys-transformer.js"
+        ]
+      }
+    }
+  }
+}

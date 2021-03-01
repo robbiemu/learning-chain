@@ -44,7 +44,7 @@ export class Block {
   data?: Records
   lastHash?: Hash
 
-  constructor (pattern: Partial<Block> = {}) {
+  constructor(pattern: Partial<Block> = {}) {
     assert(isValidPartialBlock(pattern))
     Object.entries(pattern).forEach(
       ([key, value]) => ((this as any)[key] = value)
@@ -57,7 +57,7 @@ export class Block {
    * generate a genesis block to specification
    * @param pattern partial genesis block properties
    */
-  static factoryGenesisBlock (pattern: Partial<IGenesisBlock> = {}) {
+  static factoryGenesisBlock(pattern: Partial<IGenesisBlock> = {}) {
     assert(isValidPartialBlock(pattern))
     pattern.number = 0
     if (!pattern.timestamp) {
@@ -71,7 +71,7 @@ export class Block {
   /**
    * validate block is self-consistent
    */
-  get isInternallyConsistent (): boolean {
+  get isInternallyConsistent(): boolean {
     return (
       isFinite(this.number) &&
       isFinite(this.timestamp) &&
@@ -82,10 +82,10 @@ export class Block {
   /**
    * produce a string representation of a block, based on the proeprties of one
    */
-  toString (): string {
+  toString(): string {
     const properties = keys<IBlock>()
     const reflection = properties.reduce((p, c) => {
-      ;(p as any)[c] = (this as any)[c]
+      ; (p as any)[c] = (this as any)[c]
       return p
     }, <IBlock>{})
     return JSON.stringify(reflection)
@@ -97,7 +97,7 @@ export class Block {
  * -- namely, that the time is in the past
  * @param stamp timestamp
  */
-export function isValidTimestamp (stamp: number) {
+export function isValidTimestamp(stamp: number) {
   return !isFuture(new Date(stamp))
 }
 
@@ -105,7 +105,7 @@ export function isValidTimestamp (stamp: number) {
  * given a partial representation of a block, generate the block
  * @param block pattern to generate a block against
  */
-export function isValidPartialBlock (block: Partial<IValidBlock>) {
+export function isValidPartialBlock(block: Partial<IValidBlock>) {
   const properties = keys<IBlock>()
   return Object.keys(block).every(key => properties.includes(key as any))
 }
@@ -117,7 +117,7 @@ export function isValidPartialBlock (block: Partial<IValidBlock>) {
  * this is a naive validator, as it does not know the difficulty required on
  * the blockchain.
  */
-export function isValidToBlock (index: number, chain: Array<Block>) {
+export function isValidToBlock(index: number, chain: Array<Block>) {
   if (index === 0) {
     return isValidGenesisBlock(chain[index]!)
   } else {
@@ -138,7 +138,7 @@ export function isValidToBlock (index: number, chain: Array<Block>) {
  * validate a block as a genesis block
  * @param block genesis block
  */
-export function isValidGenesisBlock (block?: Block) {
+export function isValidGenesisBlock(block?: Block) {
   if (!block) {
     return false
   }
@@ -156,7 +156,7 @@ export function isValidGenesisBlock (block?: Block) {
  * @param curr block to validate
  * @param prev previous in chain
  */
-export function isValidBlock (curr?: Block, prev?: Block) {
+export function isValidBlock(curr?: Block, prev?: Block) {
   if (
     !curr ||
     !prev ||
@@ -197,10 +197,7 @@ export function isValidBlock (curr?: Block, prev?: Block) {
  * only to the requirements of a block, not the chain (so it does not take into
  * account difficulty)
  */
-export function factoryNextBlock (
-  pattern: Partial<IBlock>,
-  chain: Array<Block>
-) {
+export function factoryNextBlock(pattern: Partial<IBlock>, chain: Array<Block>) {
   if (chain.length === 0) {
     return Block.factoryGenesisBlock()
   }

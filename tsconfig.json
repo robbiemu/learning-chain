@@ -4,7 +4,8 @@
     "baseUrl": "./src",
     "paths": {
       "@blockchain/*": [ "blockchain/*" ],
-      "@lib/*": [ "lib/*" ],
+      "@hyperledger/*": [ "hyperledger/*" ],
+      "@lib/*": [ "lib/*" ]
     },
     "plugins": [
       { "transform": "ts-transformer-keys/transformer" }
@@ -41,6 +42,7 @@
   },
   "include": [
     "src/**/*",
+    "types/*.d.ts"
   ],
   "sourceRoot": "src"
 }

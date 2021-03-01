@@ -1,0 +1,7 @@
+export * from './body.interface'
+export * from './configuration.interface'
+export * from './difficulty-payload.interface'
+export * from './digest-payload.interface'
+export * from './last-payload.interface'
+export * from './submit-payload.interface'
+export * from './payload.interface'
