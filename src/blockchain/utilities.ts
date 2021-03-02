@@ -140,6 +140,7 @@ export function getBlockAtDifficultyMultiThreaded(block: Partial<Block>, difficu
 function getRegisterOptions() {
   const registerOptions = require('../../tsconfig.json')
   registerOptions.files = true
+  registerOptions.require = ["tsconfig-paths/register"]
   registerOptions.compiler = 'ttypescript'
 
   return registerOptions

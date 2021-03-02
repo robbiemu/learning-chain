@@ -112,6 +112,8 @@ describe('demonstratesMostWork', () => {
     alt.push(getBlockAtDifficulty(factoryNextBlock({ data }, alt), 4))
     alt.push(getBlockAtDifficulty(factoryNextBlock({ data: ['dummy-data'] }, alt), 4))
 
+    console.log(...[less, more, alt].map(x => Hash.encode(String(x))))
+
     expect(demonstratesMostWork({ left: less, right: more })).toEqual('right')
     expect(demonstratesMostWork({ left: more, right: less })).toEqual('left')
     expect(demonstratesMostWork({ left: alt, right: more })).toEqual('both')
