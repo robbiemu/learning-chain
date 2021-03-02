@@ -128,7 +128,8 @@ export function getBlockAtDifficultyMultiThreaded(block: Partial<Block>, difficu
     })
 
     workers.push(worker)
-    worker.on('message', (result: Block) => {
+    worker.on('message', (pattern: Block) => {
+      const result = new Block(pattern)
       MultiService.resolve(new Promise(res => res(result)), uuid)
       workers.forEach(w => w.terminate())
     })
@@ -139,6 +140,7 @@ export function getBlockAtDifficultyMultiThreaded(block: Partial<Block>, difficu
 function getRegisterOptions() {
   const registerOptions = require('../../tsconfig.json')
   registerOptions.files = true
+  registerOptions.compiler = 'ttypescript'
 
   return registerOptions
 }

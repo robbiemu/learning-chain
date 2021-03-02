@@ -64,15 +64,15 @@ describe('getBlockAtDifficultyMultithreaded', () => {
 
     chain.push(Block.factoryGenesisBlock())
 
-    jest.setTimeout(30000);
+    jest.setTimeout(240000);
 
-    const task = getBlockAtDifficultyMultiThreaded(factoryNextBlock({ data }, chain), 8)
+    const task = getBlockAtDifficultyMultiThreaded(factoryNextBlock({ data }, chain), 6)
     MultiService.resolver$.pipe(first(resolution => resolution.hasOwnProperty(task))).subscribe(resolution => {
       chain.push(resolution[task])
 
-      console.log(Hash.encode(String(chain[1])))
+      console.log(chain[1], Hash.encode(String(chain[1])))
 
-      expect(difficulty(Hash.encode(String(chain[1])))).toEqual(8)
+      expect(difficulty(Hash.encode(String(chain[1])))).toEqual(6)
       done()
     })
   })

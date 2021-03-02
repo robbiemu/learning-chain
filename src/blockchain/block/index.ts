@@ -49,7 +49,7 @@ export class Block {
     Object.entries(pattern).forEach(
       ([key, value]) => ((this as any)[key] = value)
     )
-    assert(isFinite(this.number))
+    assert(isFinite(this.number), `${this.number} is not finite`)
     assert(isFinite(this.timestamp))
   }
 
