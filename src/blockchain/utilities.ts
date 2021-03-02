@@ -1,5 +1,4 @@
 import os from 'os'
-import path from 'path'
 import { Worker } from 'worker_threads'
 import { Observable, Subject } from 'rxjs'
 
@@ -118,8 +117,8 @@ export function getBlockAtDifficultyMultiThreaded(block: Partial<Block>, difficu
   const threads = os.cpus()
   const registerOptions = getRegisterOptions()
 
-  threads.forEach((_, i) => {
-    const args = { block, difficulty, i, threads }
+  threads.forEach((_, index) => {
+    const args = { block, difficulty, index, step: threads.length }
     const worker: Worker = new Worker('./worker.js', {
       workerData: {
         path: 'src/blockchain/get-block-at-difficulty.worker.ts',
@@ -140,15 +139,6 @@ export function getBlockAtDifficultyMultiThreaded(block: Partial<Block>, difficu
 function getRegisterOptions() {
   const registerOptions = require('../../tsconfig.json')
   registerOptions.files = true
-  registerOptions.compilerOptions.paths = Object.entries(registerOptions.compilerOptions.paths).reduce((p, c) => {
-    const key = c[0]
-    const value = c[1] as Array<string>
-    p[key] = [path.join(__dirname, '..', value[0]!)]
-    return p
-  }, {} as any)
-  /*registerOptions.include = registerOptions.include.map((dir: string) => path.join(__dirname, '..', dir))*/
-
-  console.log(JSON.stringify(registerOptions))
 
   return registerOptions
 }
